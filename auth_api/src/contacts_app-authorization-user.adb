@@ -3,7 +3,7 @@ with Contacts_App.Database;
 
 with Ada.Text_IO;
 
-package body Contacts_App.Models.User is
+package body Contacts_App.Authorization.User is
 
    use AdaBase;
    
@@ -17,7 +17,7 @@ package body Contacts_App.Models.User is
    begin
       Statement.Assign ("id", ID'Image);
       
-      if not Statement.Execute       then raise Database_Error; end if;
+      if not Statement.Execute       then raise Program_Error;  end if;
       if 0 = Statement.Rows_Returned then raise User_Not_Found; end if;
       
       declare
@@ -43,7 +43,7 @@ package body Contacts_App.Models.User is
    ------------------------
    -- Get_By_Credentials --
    ------------------------
-   function Get_By_Credentials (Credentials : in Models.Credentials.Credentials_State) return User_State is
+   function Get_By_Credentials (Credentials : in Authorization.Credentials.Credentials_State) return User_State is
       Statement : Database.Statement_Type := Database.Driver.Prepare_Select (Tables     => "users", 
                                                                              Columns    => "*", 
                                                                              Conditions => "name = :name and password = :password");
