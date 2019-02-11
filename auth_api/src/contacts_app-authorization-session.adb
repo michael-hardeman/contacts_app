@@ -4,9 +4,9 @@ with Ada.Calendar.Arithmetic;
 with GNATCOLL.JSON;
 with AdaID.Generate;
 with AdaBase.Results.Sets;
-with Contacts_App.Models.User;
+with Contacts_App.Authorization.User;
 
-package body Contacts_App.Models.Session is
+package body Contacts_App.Authorization.Session is
 
    use AdaBase;
    
@@ -20,8 +20,8 @@ package body Contacts_App.Models.Session is
    begin
       Statement.Assign ("user_id", User_ID'Image);
       
-      if not Statement.Execute       then raise Database_Error; end if;
-      if 0 = Statement.Rows_Returned then return No_Session;    end if;
+      if not Statement.Execute       then raise Program_Error; end if;
+      if 0 = Statement.Rows_Returned then return No_Session;   end if;
       
       declare
          Row     : Results.Sets.Datarow := Statement.Fetch_Next;
@@ -56,7 +56,7 @@ package body Contacts_App.Models.Session is
       
       if not Statement.Execute then
          Database.Driver.Rollback;
-         raise Database_Error; 
+         raise Program_Error; 
       end if;
       Database.Driver.Commit;
       return Session_State'(Token_Length => Token'Length, 
@@ -75,7 +75,7 @@ package body Contacts_App.Models.Session is
       
       if not Statement.Execute then
          Database.Driver.Rollback;
-         raise Database_Error; 
+         raise Program_Error; 
       end if;
       Database.Driver.Commit;
    end;
@@ -107,7 +107,7 @@ package body Contacts_App.Models.Session is
       
       if not Statement.Execute then
          Database.Driver.Rollback;
-         raise Database_Error; 
+         raise Program_Error; 
       end if;
       Database.Driver.Commit;
       Session.Updated := Ada.Calendar.Clock;
@@ -116,10 +116,10 @@ package body Contacts_App.Models.Session is
    ----------------------
    -- Create_Or_Revive --
    ----------------------
-   function Create_Or_Revive (Credentials : in Models.Credentials.Credentials_State) return Session_State
+   function Create_Or_Revive (Credentials : in Authorization.Credentials.Credentials_State) return Session_State
    is
-      User    : Models.User.User_State := Models.User.Get_By_Credentials (Credentials);
-      Session : Session_State          := Get_By_User_ID (User.ID);
+      User    : Authorization.User.User_State := Authorization.User.Get_By_Credentials (Credentials);
+      Session : Session_State                 := Get_By_User_ID (User.ID);
    begin
       if Session /= No_Session then
          if not Is_Expired (Session) then 

@@ -1,6 +1,6 @@
 with Ada.Streams; use Ada.Streams;
 
-package Contacts_App.Models.Credentials is
+package Contacts_App.Authorization.Credentials is
    
    type Credentials_State (
       Username_Length : Positive; 

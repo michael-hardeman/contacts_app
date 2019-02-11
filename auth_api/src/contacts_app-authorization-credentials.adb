@@ -2,7 +2,7 @@
 with GNATCOLL.JSON; use GNATCOLL.JSON;
 with GNAT.SHA256;
 
-package body Contacts_App.Models.Credentials is
+package body Contacts_App.Authorization.Credentials is
 
    ----------
    -- Salt --

@@ -1,6 +1,6 @@
-with Contacts_App.Models.Credentials;
+with Contacts_App.Authorization.Credentials;
 
-package Contacts_App.Models.User is
+package Contacts_App.Authorization.User is
 
    type User_State (Name_Length        : Positive;
                     Password_Length    : Positive;
@@ -15,7 +15,7 @@ package Contacts_App.Models.User is
    end record;
 
    function Get_By_ID (ID : in Natural) return User_State;
-   function Get_By_Credentials (Credentials : in Models.Credentials.Credentials_State) return User_State;
+   function Get_By_Credentials (Credentials : in Authorization.Credentials.Credentials_State) return User_State;
 
    User_Not_Found : Exception;
 end;

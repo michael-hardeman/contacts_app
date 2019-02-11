@@ -1,9 +1,9 @@
 with Ada.Calendar;
 
 with Contacts_App.Database;
-with Contacts_App.Models.Credentials;
+with Contacts_App.Authorization.Credentials;
 
-package Contacts_App.Models.Session is
+package Contacts_App.Authorization.Session is
 
    type Session_State (Token_Length : Natural) is record
       User_ID : Integer;
@@ -21,10 +21,10 @@ package Contacts_App.Models.Session is
                                                          Token        => (1 .. 1 => ASCII.NUL), 
                                                          Updated      => No_Session_Updated);
    
-   function Get_By_User_ID   (User_ID     : in Natural)                              return Session_State;
-   function Create           (User_ID     : in Natural)                              return Session_State;
-   function Create_Or_Revive (Credentials : in Models.Credentials.Credentials_State) return Session_State;
-   function Serialize        (Session     : in Session_State)                        return String;
+   function Get_By_User_ID   (User_ID     : in Natural)                                     return Session_State;
+   function Create           (User_ID     : in Natural)                                     return Session_State;
+   function Create_Or_Revive (Credentials : in Authorization.Credentials.Credentials_State) return Session_State;
+   function Serialize        (Session     : in Session_State)                               return String;
    
    Invalid_Credentials : exception;
 end;
