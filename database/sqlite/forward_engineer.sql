@@ -140,24 +140,6 @@ PRIMARY KEY (token),
 FOREIGN KEY (user_id) REFERENCES users(id),
 UNIQUE (user_id));
 
-----------
--- User --
-----------
-DROP CASCADE USER IF EXISTS contacts_app;
-CREATE USER contacts_app WITH PASSWORD 'KcWTgnDHk7og';
-
-ALTER TABLE public.countries OWNER TO contacts_app;
-ALTER TABLE public.users OWNER TO contacts_app;
-ALTER TABLE public.phones OWNER TO contacts_app;
-ALTER TABLE public.states OWNER TO contacts_app;
-ALTER TABLE public.cities OWNER TO contacts_app;
-ALTER TABLE public.emails OWNER TO contacts_app;
-ALTER TABLE public.users_has_phones OWNER TO contacts_app;
-ALTER TABLE public.addresses OWNER TO contacts_app;
-ALTER TABLE public.users_has_addresses OWNER TO contacts_app;
-ALTER TABLE public.contacts OWNER TO contacts_app;
-ALTER TABLE public.sessions OWNER TO contacts_app;
-
 ---------------
 -- countries --
 ---------------
