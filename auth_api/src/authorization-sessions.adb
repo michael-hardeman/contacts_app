@@ -1,22 +1,23 @@
-with Ada.Text_IO;
 with Ada.Calendar.Arithmetic;
 
 with GNATCOLL.JSON;
 with AdaID.Generate;
 with AdaBase.Results.Sets;
-with Contacts_App.Authorization.User;
 
-package body Contacts_App.Authorization.Session is
+with Authorization.Users;
 
+package body Authorization.Sessions is
+   
    use AdaBase;
+   use Contacts_App.Database;
    
    --------------------
    -- Get_By_User_ID --
    --------------------
-   function Get_By_User_ID (User_ID : in Natural) return Session_State is
-      Statement : Database.Statement_Type := Database.Driver.Prepare_Select (Tables     => "sessions", 
-                                                                             Columns    => "*",
-                                                                             Conditions => "user_id = :user_id");
+   function Get_By_User_ID (User_ID : in Natural) return Session_Model is
+      Statement : Statement_Type := Driver.Prepare_Select (Tables     => "sessions", 
+                                                           Columns    => "*",
+                                                           Conditions => "user_id = :user_id");
    begin
       Statement.Assign ("user_id", User_ID'Image);
       
@@ -24,12 +25,12 @@ package body Contacts_App.Authorization.Session is
       if 0 = Statement.Rows_Returned then return No_Session;   end if;
       
       declare
-         Row     : Results.Sets.Datarow := Statement.Fetch_Next;
-         Token   : String               := Row.Column ("token").As_String;
-         ID      : Natural              := Natural (Row.Column ("user_id").As_Byte4);
-         Updated : Ada.Calendar.Time    := Row.Column ("updated").As_Time;
+         Row     : AdaBase.Results.Sets.Datarow := Statement.Fetch_Next;
+         Token   : String                       := Row.Column ("token").As_String;
+         ID      : Natural                      := Natural (Row.Column ("user_id").As_Byte4);
+         Updated : Ada.Calendar.Time            := Row.Column ("updated").As_Time;
       begin
-         return Session_State'(Token_Length => Token'Length,
+         return Session_Model'(Token_Length => Token'Length,
                                User_ID      => ID,
                                Token        => Token,
                                Updated      => Updated);
@@ -39,7 +40,7 @@ package body Contacts_App.Authorization.Session is
    ------------
    -- Create --
    ------------
-   function Create (User_ID : in Natural) return Session_State is
+   function Create (User_ID : in Natural) return Session_Model is
       
       function Generate_Token return String is
          Token : AdaID.UUID;
@@ -48,18 +49,18 @@ package body Contacts_App.Authorization.Session is
          return AdaID.To_String (Token);
       end;
       
-      Statement : Database.Statement_Type := Database.Driver.Prepare(SQL => "INSERT INTO sessions (user_id, token) VALUES (:user_id, :token)");
+      Statement : Statement_Type := Driver.Prepare(SQL => "INSERT INTO sessions (user_id, token) VALUES (:user_id, :token)");
       Token     : String := Generate_Token;
    begin
       Statement.Assign ("user_id", User_ID'Image);
       Statement.Assign ("token", Token);
       
       if not Statement.Execute then
-         Database.Driver.Rollback;
+         Driver.Rollback;
          raise Program_Error; 
       end if;
-      Database.Driver.Commit;
-      return Session_State'(Token_Length => Token'Length, 
+      Driver.Commit;
+      return Session_Model'(Token_Length => Token'Length, 
                             User_ID      => User_ID, 
                             Token        => Token, 
                             Updated      => Ada.Calendar.Clock);
@@ -69,21 +70,21 @@ package body Contacts_App.Authorization.Session is
    -- Delete_By_User_ID --
    -----------------------
    procedure Delete_By_User_ID (User_ID : in Natural) is
-      Statement : Database.Statement_Type := Database.Driver.Prepare(SQL => "DELETE FROM sessions WHERE user_id = :user_id");
+      Statement : Statement_Type := Driver.Prepare(SQL => "DELETE FROM sessions WHERE user_id = :user_id");
    begin
       Statement.Assign ("user_id", User_ID'Image);
       
       if not Statement.Execute then
-         Database.Driver.Rollback;
+         Driver.Rollback;
          raise Program_Error; 
       end if;
-      Database.Driver.Commit;
+      Driver.Commit;
    end;
    
    ----------------
    -- Is_Expired --
    ----------------
-   function Is_Expired (Session : in Session_State) return Boolean is
+   function Is_Expired (Session : in Session_Model) return Boolean is
       use Ada.Calendar;
       use Ada.Calendar.Arithmetic;
       
@@ -100,26 +101,26 @@ package body Contacts_App.Authorization.Session is
    ----------------------
    -- Update_Timestamp --
    ----------------------
-   procedure Update_Timestamp (Session : in out Session_State) is
-      Statement : Database.Statement_Type := Database.Driver.Prepare(SQL => "UPDATE sessions SET updated = CURRENT_TIMESTAMP WHERE user_id = :user_id");
+   procedure Update_Timestamp (Session : in out Session_Model) is
+      Statement : Statement_Type := Driver.Prepare(SQL => "UPDATE sessions SET updated = CURRENT_TIMESTAMP WHERE user_id = :user_id");
    begin
       Statement.Assign ("user_id", Session.User_ID'Image);
       
       if not Statement.Execute then
-         Database.Driver.Rollback;
+         Driver.Rollback;
          raise Program_Error; 
       end if;
-      Database.Driver.Commit;
+      Driver.Commit;
       Session.Updated := Ada.Calendar.Clock;
    end;
       
    ----------------------
    -- Create_Or_Revive --
    ----------------------
-   function Create_Or_Revive (Credentials : in Authorization.Credentials.Credentials_State) return Session_State
+   function Create_Or_Revive (Creds : in Credentials.Credential_Model) return Session_Model
    is
-      User    : Authorization.User.User_State := Authorization.User.Get_By_Credentials (Credentials);
-      Session : Session_State                 := Get_By_User_ID (User.ID);
+      User    : Users.User_Model := Users.Get_By_Credentials (Creds);
+      Session : Session_Model    := Get_By_User_ID (User.ID);
    begin
       if Session /= No_Session then
          if not Is_Expired (Session) then 
@@ -134,7 +135,7 @@ package body Contacts_App.Authorization.Session is
    ---------------
    -- Serialize --
    ---------------
-   function Serialize (Session : in Session_State) return String is
+   function Serialize (Session : in Session_Model) return String is
       use GNATCOLL.JSON;
       
       Output : JSON_Value := Create_Object;

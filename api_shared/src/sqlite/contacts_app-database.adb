@@ -8,11 +8,7 @@ package body Contacts_App.Database is
       Driver.Command_Standard_Logger (Device => File, Action => Attach);
       Driver.Set_Logger_Filename (Filename => LOG_FILE);
 
-      Driver.Basic_Connect (Database => "contacts_app",
-                            Username => "contacts_app",
-                            Password => "KcWTgnDHk7og",
-                            Hostname => "localhost",
-                            Port     => 3306);
+      Driver.Basic_Connect (Database => DATABASE_PATH);
    end;
    
    procedure Disconnect is

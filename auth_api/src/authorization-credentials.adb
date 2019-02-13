@@ -2,7 +2,7 @@
 with GNATCOLL.JSON; use GNATCOLL.JSON;
 with GNAT.SHA256;
 
-package body Contacts_App.Authorization.Credentials is
+package body Authorization.Credentials is
 
    ----------
    -- Salt --
@@ -13,12 +13,10 @@ package body Contacts_App.Authorization.Credentials is
    -- Parse --
    -----------
    -- The implementation is wrapped for error handling.
-   function Parse (Binary_Data : in  Stream_Element_Array) return Credentials_State
+   function Parse (Binary_Data : in  Stream_Element_Array) return Credential_Model
    is
-      function Implementation (Binary_Data : in  Stream_Element_Array) return Credentials_State
+      function Implementation (Binary_Data : in  Stream_Element_Array) return Credential_Model
       is
-         use GNATCOLL.JSON;
-      
          Data : UTF8_String (1 .. Binary_Data'Length);
          for Data'Address use Binary_Data'Address;
       
@@ -27,10 +25,10 @@ package body Contacts_App.Authorization.Credentials is
          Password : UTF8_String := Get (Val => Parsed, Field => "password");
          Hashed   : String      := GNAT.SHA256.Digest (Salt (Password));
       begin
-         return Credentials_State'(Username_Length => Username'Length,
-                                   Password_Length => Hashed'Length,
-                                   Username        => Username,
-                                   Password        => Hashed);
+         return Credential_Model'(Username_Length => Username'Length,
+                                  Password_Length => Hashed'Length,
+                                  Username        => Username,
+                                  Password        => Hashed);
       end;
    begin
       return Implementation (Binary_Data);
