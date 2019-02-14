@@ -18,7 +18,7 @@ package body Contacts_App.Database is
    procedure Disconnect is
       use AdaBase.Logger.Facility;
    begin
-      Driver.Command_Standard_Logger (Device => File, action => Detach);
+      Driver.Command_Standard_Logger (Device => File, Action => Detach);
    end;
    
 end;

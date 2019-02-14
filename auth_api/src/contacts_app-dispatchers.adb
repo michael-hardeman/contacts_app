@@ -5,10 +5,9 @@ with AWS.Messages;
 with AWS.MIME;
 with AWS.Status;
 
-with Contacts_App.Models.Credentials;
-with Contacts_App.Models.Session;
-with Contacts_App.Models.User;
-with GNATCOLL.JSON;
+with Authorization.Credentials;
+with Authorization.Sessions;
+with Authorization.Users;
 
 package body Contacts_App.Dispatchers is
 
@@ -24,20 +23,20 @@ package body Contacts_App.Dispatchers is
                                  return Response.Data
    is
       pragma Unreferenced (Dispatcher);
-      use Models.Credentials;
-      use Models.Session;
+      use Authorization.Credentials;
+      use Authorization.Sessions;
 
-      Credentials : Credentials_State := Parse (Status.Binary_Data (Request));
-      Session     : Session_State     := Create_Or_Revive (Credentials);
+      Credentials : Credential_Model := Parse (Status.Binary_Data (Request));
+      Session     : Session_Model    := Create_Or_Revive (Credentials);
    begin
       return Response.Build (Content_Type => MIME.Application_JSON,
                              Message_Body => Serialize (Session),
                              Status_Code  => Messages.s200);
 
    exception
-      when Models.Credentials.Parsing_Error =>
+      when Authorization.Credentials.Parsing_Error =>
          return Response.Acknowledge (Messages.s400, "Invalid Body");
-      when Models.User.User_Not_Found =>
+      when Authorization.Users.User_Not_Found =>
          return Response.Acknowledge (Messages.S401, "Invalid Credentials");
       when Error : others =>
          Ada.Text_IO.Put_Line (Ada.Exceptions.Exception_Name (Error));

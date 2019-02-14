@@ -138,7 +138,7 @@ CREATE TABLE sessions (
   updated TIMESTAMP   DEFAULT current_timestamp,
 PRIMARY KEY (token),
 FOREIGN KEY (user_id) REFERENCES users(id),
-UNIQUE (sortname));
+UNIQUE (user_id));
 
 ----------
 -- User --
