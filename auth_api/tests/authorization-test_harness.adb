@@ -10,7 +10,8 @@ with Authorization.Test_Suite;
 
 procedure Authorization.Test_Harness is
 
-   procedure Run_Authorization_Test is new AUnit.Run.Test_Runner (Authorization.Test_Suite.Suite);
+   procedure Run_Authorization_Test
+      is new AUnit.Run.Test_Runner (Authorization.Credentials.Test_Suite.Suite);
 
    Reporter : AUnit.Reporter.Text.Text_Reporter;
 begin
