@@ -6,7 +6,7 @@ pragma Elaborate_All (AUnit.Run);
 pragma Elaborate_All (AUnit.Reporter);
 pragma Elaborate_All (AUnit.Reporter.Text);
 
-with Authorization.Test_Suite;
+with Authorization.Credentials.Test_Suite;
 
 procedure Authorization.Test_Harness is
 

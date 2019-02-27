@@ -38,7 +38,7 @@ project API_Shared is
          when "yes" => 
             case AdaBase.OS_VERSION is
                when "unix"    => Switch_Linker := Switch_Linker & ("-lmysqlclient");
-               when "windows" => Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "libmysql.dll");
+               when "windows" => Switch_Linker := Switch_Linker & ("-Wl,-Bstatic,--enable-stdcall-fixup", "-llibmysql", "-lmysqlclient");
             end case;
       end case;
 

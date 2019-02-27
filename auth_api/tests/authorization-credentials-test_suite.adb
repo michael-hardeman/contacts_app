@@ -1,4 +1,4 @@
-with Authorization.Tests;
+with Authorization.Credentials.Tests;
 
 package body Authorization.Credentials.Test_Suite is
 
