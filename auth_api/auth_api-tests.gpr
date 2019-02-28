@@ -24,7 +24,8 @@ project Auth_API.Tests is
    -- Linker --
    ------------
    package Linker is
-      for Default_Switches ("Ada") use ("-lgcov", "-fprofile-arcs", "-ftest-coverage");
+      Switch_Linker := Auth_API.Linker'Default_Switches ("Ada") & ("-lgcov", "-fprofile-arcs", "-ftest-coverage");
+      for Default_Switches ("Ada") use Switch_Linker;
    end Linker;
 
 end Auth_API.Tests;

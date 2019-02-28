@@ -12,6 +12,8 @@ project Auth_API is
 
    for Main use ("contacts_app-main.adb");
 
+   package Linker renames API_Shared.Linker;
+
    package Builder is
       for Executable ("contact_app-main.adb") use "auth_api";
    end Builder;
