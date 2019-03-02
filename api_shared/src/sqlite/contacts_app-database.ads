@@ -6,8 +6,8 @@ with AdaBase.Logger.Facility;
 
 package Contacts_App.Database is
 
-   DB_FILE  : constant String := "../database/sqlite/contacts_app.db";
-   LOG_FILE : constant String := "sqlite.log";
+   DEFAULT_FILE : constant String := "../database/sqlite/contacts_app.db";
+   DEFAULT_LOG  : constant String := "sqlite.log";
 
    EMPTY_DATABASE : constant Stream_Element_Array (1 .. 8192) := (
       16#53#, 16#51#, 16#4c#, 16#69#, 16#74#, 16#65#, 16#20#, 16#66#,
@@ -33,8 +33,8 @@ package Contacts_App.Database is
    Temp_File : Stream_IO.File_Type;
    Driver    : Database_Driver;
 
-   procedure Connect;
    procedure Connect_Empty;
+   procedure Connect;
    procedure Disconnect;
 
 end;
