@@ -27,7 +27,7 @@ package body Contacts_App.Database is
       Stream_Element_Array'Write (Stream (Temp_File), EMPTY_DATABASE);
       Close (Temp_File);
 
-      Connect_Private (Driver, Name (Temp_File), Log_File);
+      Connect_Private (Driver, Name (Temp_File), DEFAULT_LOG);
    end;
    
    -------------

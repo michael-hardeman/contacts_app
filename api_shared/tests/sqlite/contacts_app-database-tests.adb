@@ -3,6 +3,11 @@ with AUnit.Assertions; use AUnit.Assertions;
 pragma Elaborate_All (AUnit);
 pragma Elaborate_All (AUnit.Assertions);
 
+with Ada.Directories; use Ada.Directories;
+with Ada.Streams; use Ada.Streams;
+with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
+with Contacts_App.Test_Utilities.Common; use Contacts_App.Test_Utilities.Common;
+
 package body Contacts_App.Database.Tests is
 
    --------------------
@@ -22,18 +27,38 @@ package body Contacts_App.Database.Tests is
    procedure Test_Connect_Empty (Test : in out Test_Cases.Test_Case'Class) is
       
       function Read_Stream_Element_Array (Path : in String) return Stream_Element_Array is
-         Output : Stream_Element_Array (1 .. Ada.Directories.Size (Path)) := (others => 0);
+         Output : Stream_Element_Array (1 .. Stream_Element_Offset (Size (Path))) := (others => 0);
          File   : Stream_IO.File_Type;
       begin
-         Open (File, Path);
-         Output'Read (Stream (File));
+         Open (File, Out_File, Path);
+         Stream_Element_Array'Read (Stream (File), Output);
          Close (File);
+         
+         return Output;
       end;
 
    begin
       Connect_Empty;
       Assert_Booleans_Equal (Driver.Trait_Connected, True);
       Assert_Stream_Element_Arrays_Equal (Read_Stream_Element_Array (Temp_File), EMPTY_DATABASE);
+   end;
+   
+   ------------------
+   -- Test Connect --
+   ------------------
+   procedure Test_Connect (Test : in out Test_Cases.Test_Case'Class) is
+   begin
+      Connect;
+      Assert_Booleans_Equal (Driver.Trait_Connected, True);
+   end;
+   
+   ---------------------
+   -- Test Disconnect --
+   ---------------------
+   procedure Test_Disconnect (Test : in out Test_Cases.Test_Case'Class) is
+   begin
+      Disconnect;
+      Assert_Booleans_Equal (Driver.Trait_Connected, False);
    end;
 
 end;

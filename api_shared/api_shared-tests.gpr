@@ -1,4 +1,5 @@
-with "api_shared.gpr";
+with "./api_shared.gpr";
+with "lib/adabase/adabase.gpr";
 with "aunit";
 
 project API_Shared.Tests is
@@ -47,9 +48,9 @@ project API_Shared.Tests is
       Switch_Compiler := ("-gnatW8",    -- Wide character encoding method (?=h/u/s/e/8/b)
                           "-gnat2012"); -- Ada 2012 mode (default)
       case Debug is
-         when "No"  => Switch_Compiler := Switch_Compiler & ("-O3",     -- Maximum Optimization
+         when "no"  => Switch_Compiler := Switch_Compiler & ("-O3",     -- Maximum Optimization
                                                              "-gnatp"); -- Surpress all checks
-         when "Yes" => Switch_Compiler := Switch_Compiler & ("-O0",     -- Minimize Optimization
+         when "yes" => Switch_Compiler := Switch_Compiler & ("-O0",     -- Minimize Optimization
                                                              "-g",      -- Generate debugging information
                                                              "-gnata",  -- Assertions enabled. Pragma Assert/Debug to be activated
                                                              "-E",      -- Store traceback in exceptions
