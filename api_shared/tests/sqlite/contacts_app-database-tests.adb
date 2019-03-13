@@ -1,12 +1,12 @@
 
 with AUnit.Assertions; use AUnit.Assertions;
-pragma Elaborate_All (AUnit);
-pragma Elaborate_All (AUnit.Assertions);
-
 with Ada.Directories; use Ada.Directories;
 with Ada.Streams; use Ada.Streams;
 with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 with Contacts_App.Test_Utilities.Common; use Contacts_App.Test_Utilities.Common;
+
+pragma Elaborate_All (AUnit);
+pragma Elaborate_All (AUnit.Assertions);
 
 package body Contacts_App.Database.Tests is
 
