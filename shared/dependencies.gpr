@@ -12,6 +12,11 @@ project Dependencies is
    Driver_SQLite := AdaBase.Driver_SQLite;
    Driver_FBird  := AdaBase.Driver_FBird;
 
+   -------------
+   -- Sources --
+   -------------
+   for Source_Dirs use ();
+
    ------------
    -- Linker --
    ------------
@@ -23,7 +28,7 @@ project Dependencies is
          when "yes" => 
             case AdaBase.OS_VERSION is
                when "unix"    => Switch_Linker := Switch_Linker & ("-lmysqlclient");
-               when "windows" => Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "libmysql.dll");
+               when "windows" => Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "-LC:\mysql\lib", "-lmysql");
             end case;
       end case;
 
@@ -52,7 +57,5 @@ project Dependencies is
 
       for Default_Switches ("Ada") use Switch_Linker;
    end Linker;
-
-   for Source_Dirs use ();
 
 end Dependencies;
