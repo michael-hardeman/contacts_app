@@ -1,12 +1,7 @@
+with "profiles.gpr";
 with "dependencies.gpr";
 
 project Tests is
-
-   ----------------------
-   -- Scenario Options --
-   ----------------------
-   type Boolean_Option is ("yes", "no");
-   Debug : Boolean_Option := external ("Debug", "yes");
 
    -------------
    -- Sources --
@@ -43,22 +38,7 @@ project Tests is
    --------------
    -- Compiler --
    --------------
-   package Compiler is
-      Switch_Compiler := ("-gnatW8",    -- Wide character encoding method (?=h/u/s/e/8/b)
-                          "-gnat2012"); -- Ada 2012 mode (default)
-      case Debug is
-         when "no"  => Switch_Compiler := Switch_Compiler & ("-O3",     -- Maximum Optimization
-                                                             "-gnatp"); -- Surpress all checks
-         when "yes" => Switch_Compiler := Switch_Compiler & ("-O0",     -- Minimize Optimization
-                                                             "-g",      -- Generate debugging information
-                                                             "-gnata",  -- Assertions enabled. Pragma Assert/Debug to be activated
-                                                             "-E",      -- Store traceback in exceptions
-                                                             "-gnatf",  -- Full errors. Verbose details, all undefined references
-                                                             "-gnato"); -- Enable overflow checking for numerics
-      end case;
-       
-      for Default_Switches ("Ada") use Switch_Compiler;
-   end Compiler;
+   package Compiler renames Profiles.Compiler;
 
    ------------
    -- Linker --
