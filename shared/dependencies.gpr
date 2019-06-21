@@ -1,0 +1,58 @@
+
+with "aws";
+with "aunit";
+with "gnatcoll";
+with "lib/AdaID/adaid.gpr";
+with "lib/adabase/adabase.gpr";
+
+project Dependencies is
+
+   Driver_MySQL  := AdaBase.Driver_MySQL;
+   Driver_PgSQL  := AdaBase.Driver_PgSQL;
+   Driver_SQLite := AdaBase.Driver_SQLite;
+   Driver_FBird  := AdaBase.Driver_FBird;
+
+   ------------
+   -- Linker --
+   ------------
+   package Linker is
+      Switch_Linker := ();
+
+      case Driver_MySQL is
+         when "no"  => null;
+         when "yes" => 
+            case AdaBase.OS_VERSION is
+               when "unix"    => Switch_Linker := Switch_Linker & ("-lmysqlclient");
+               when "windows" => Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "libmysql.dll");
+            end case;
+      end case;
+
+      case Driver_PgSQL is
+         when "no"  => null;
+         when "yes" => 
+            case AdaBase.OS_VERSION is
+               when "unix"    => Switch_Linker := Switch_Linker & ("-lpq");
+               when "windows" => Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "-LC:\Program Files\PostgreSQL\11\bin", "-lpq");
+            end case;
+      end case;
+
+      case Driver_SQLite is
+         when "no"  => null;
+         when "yes" =>
+            case AdaBase.OS_VERSION is
+               when "unix"    => Switch_Linker := Switch_Linker & ("-lsqlite");
+               when "windows" => Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "libsqlite.dll");
+            end case;
+      end case;
+      
+      case Driver_FBird is
+         when "no"  => null;
+         when "yes" => null;
+      end case;
+
+      for Default_Switches ("Ada") use Switch_Linker;
+   end Linker;
+
+   for Source_Dirs use ();
+
+end Dependencies;
