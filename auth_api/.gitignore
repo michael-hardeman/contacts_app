@@ -1,5 +1,2 @@
+*.dll
 *.log
-auth_api
-auth_api.*
-authorization-test_harness
-authorization-test_harness.*
