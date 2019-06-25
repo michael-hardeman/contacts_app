@@ -17,7 +17,7 @@ Port Summary
 
  | Service        | Port |
  | -------------- | ---- |
- | web_interfaces | 8081 |
+ | webpage        | 8081 |
  | auth_api       | 8082 |
  | users_api      | 8083 |
  | contacts_api   | 8084 |
@@ -35,12 +35,9 @@ Install the client libraries libmysqlclient will need to be present on the syste
 
 #### Windows
 
-The client library `libmysql.dll` is included in the [MySQL Installer](https://dev.mysql.com/downloads/installer/). After downloading and installing, I found it in `C:\Program Files\MySQL\MySQL Connector C 6.1\lib`. Copy `libmysql.dll` to each `*_api` folder. That dll will need to exist on the executable path of the `*_api.exe` on any system you deploy to.
-
-
+The client library `libmysql.dll` is included in the [MySQL Installer](https://dev.mysql.com/downloads/installer/). After downloading and installing, I found it in `C:\Program Files\MySQL\MySQL Connector C 6.1\lib`. Copy `libmysql.dll` to `shared` and to each `*_api` folder. That dll will need to exist on the executable path of the `*_api.exe` on any system you deploy to.
 
 ### Building the API with PostgreSQL
-
 
 #### Linux
   
@@ -50,7 +47,7 @@ Install the client libraries. libpq will need to be present on the system you de
 
 #### Windows
 
-The client library `libpq.dll` is included in the [PostgreSQL Installer](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads). After downloading and installing, I found it in `C:\Program Files\PostgreSQL\version\lib`. Copy `libpq.dll` to each `*_api` folder. That dll will need to exist on the executable path of the `*_api.exe` on any system you deploy to.
+The client library `libpq.dll` is included in the [PostgreSQL Installer](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads). After downloading and installing, I found it in `C:\Program Files\PostgreSQL\version\lib`. Copy `libpq.dll` to `shared` and to each `*_api` folder. That dll will need to exist on the executable path of the `*_api.exe` on any system you deploy to.
 
 
 

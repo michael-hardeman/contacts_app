@@ -13,7 +13,6 @@ package Contacts_App.Database.Tests is
 
    overriding procedure Register_Tests (T : in out TC);
 
-   procedure Test_Connect_Empty (Test : in out Test_Cases.Test_Case'Class);
    procedure Test_Connect       (Test : in out Test_Cases.Test_Case'Class);
    procedure Test_Disconnect    (Test : in out Test_Cases.Test_Case'Class);
 end;
