@@ -7,7 +7,7 @@ project Profiles is
    -- Scenario Options --
    ----------------------
    type Boolean_Option is ("yes", "no");
-   Debug : Boolean_Option := external ("Debug", "yes");
+   Debug : Boolean_Option := external ("DEBUG", "yes");
 
    --------------
    -- Compiler --
