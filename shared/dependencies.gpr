@@ -7,10 +7,8 @@ with "lib/adabase/adabase.gpr";
 
 project Dependencies is
 
-   Driver_MySQL  := AdaBase.Driver_MySQL;
-   Driver_PgSQL  := AdaBase.Driver_PgSQL;
-   Driver_SQLite := AdaBase.Driver_SQLite;
-   Driver_FBird  := AdaBase.Driver_FBird;
+   type Database_Option is ("mysql", "postgres", "sqlite");
+   Database : Database_Option := External("Database", "mysql");
 
    -------------
    -- Sources --
@@ -23,36 +21,19 @@ project Dependencies is
    package Linker is
       Switch_Linker := ();
 
-      case Driver_MySQL is
-         when "no"  => null;
-         when "yes" => 
-            case AdaBase.OS_VERSION is
-               when "unix"    => Switch_Linker := Switch_Linker & ("-lmysqlclient");
-               when "windows" => Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "-LC:\mysql\lib", "-lmysql");
+      case AdaBase.OS_VERSION is
+         when "unix" =>
+            Switch_Linker := Switch_Linker & ("-lsqlite");
+            case Database is
+               when "mysql"    => Switch_Linker := Switch_Linker & ("-lmysqlclient");
+               when "postgres" => Switch_Linker := Switch_Linker & ("-lpq");
             end case;
-      end case;
-
-      case Driver_PgSQL is
-         when "no"  => null;
-         when "yes" => 
-            case AdaBase.OS_VERSION is
-               when "unix"    => Switch_Linker := Switch_Linker & ("-lpq");
-               when "windows" => Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "-LC:\Program Files\PostgreSQL\11\bin", "-lpq");
+         when "windows" =>
+            Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "C:\bin\sqlite3.dll");
+            case Database is
+               when "mysql"    => Switch_Linker := Switch_Linker & ("-LC:\mysql\lib", "-lmysql");
+               when "postgres" => Switch_Linker := Switch_Linker & ("-LC:\Program Files\PostgreSQL\11\lib", "-lpq");
             end case;
-      end case;
-
-      case Driver_SQLite is
-         when "no"  => null;
-         when "yes" =>
-            case AdaBase.OS_VERSION is
-               when "unix"    => Switch_Linker := Switch_Linker & ("-lsqlite");
-               when "windows" => Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "libsqlite.dll");
-            end case;
-      end case;
-      
-      case Driver_FBird is
-         when "no"  => null;
-         when "yes" => null;
       end case;
 
       for Default_Switches ("Ada") use Switch_Linker;

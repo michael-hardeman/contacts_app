@@ -1,9 +1,9 @@
-package body Contacts_App.Database is
+package body Contacts_App.Database.In_Memory is
 
    -------------
    -- Connect --
    -------------
-   procedure Connect is
+   procedure Connect (Driver : in out Database_Driver) is
       use AdaBase.Logger.Facility;
 
       Facility : LogFacility;
@@ -14,10 +14,11 @@ package body Contacts_App.Database is
       Driver.Basic_Connect (Database => DEFAULT_FILE);
    end;
    
+
    ----------------
    -- Disconnect --
    ----------------
-   procedure Disconnect is
+   procedure Disconnect (Driver : in out Database_Driver) is
       use AdaBase.Logger.Facility;
    begin
       Driver.Command_Standard_Logger (Device => File, Action => Detach);
