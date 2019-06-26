@@ -41,25 +41,24 @@ Building
 
 Use [shared/tests.gpr](shared/tests.gpr) to test if your database is setup correctly. The important part about building now is setting the right Scenario variables:
 
-`gprbuild -Pshared/tests.gpr -XSQLITE=yes -XMYSQL=yes -XPOSTGRESQL=no -XDatabase=mysql -XOS_VERSION=windows -XDEBUG=yes -XDEBUGSYM=no -XGPR_BUILD=static -XGNATCOLL_CORE_BUILD=static -XXMLADA_BUILD=static -XAWS_BUILD=static`
+`gprbuild -Pshared/tests.gpr -XSQLITE=yes -XMYSQL=yes -XPOSTGRESQL=no -XDatabase=mysql -XOS_VERSION=windows -XDEBUGSYM=no -XGPR_BUILD=static -XGNATCOLL_CORE_BUILD=static -XXMLADA_BUILD=static -XAWS_BUILD=static`
 
 You only have to list a scenario variable if you want to change it's value from the default.
 
 The scenario variables available are:
 
- | Variable            | Default | Possible Values         | Description                               |
- | ------------------- | ------- | ----------------------- | ----------------------------------------- |
- | SQLITE              | yes     | yes, no                 | Adds SQLite sources to AdaBase (REQUIRED) |
- | MYSQL               | no      | yes, no                 | Adds MySQL sources to AdaBase             |
- | POSTGRESQL          | no      | yes, no                 | Adds PostgreSQL sources to AdaBase        |
- | DATABASE            | sqlite  | mysql, postgres, sqlite | Which real database to connect to         |
- | OS_VERSION          | unix    | unix, windows           | Configures linking options                |
- | DEBUG               | yes     | yes, no                 | Compiles our sources with debug symbols   |
- | DEBUGSYM            | no      | yes, no                 | Compiles AdaBase with debug symbols       |
- | GPR_BUILD           | static  | static, dynamic         | Something for AWS, don't modify           |
- | GNATCOLL_CORE_BUILD | static  | static, dynamic         | Something for AWS, don't modify           |
- | XMLADA_BUILD        | static  | static, dynamic         | Something for AWS, don't modify           |
- | AWS_BUILD           | static  | static, dynamic         | Something for AWS, don't modify           |
+ | Variable            | Default | Possible Values         | Description                                 |
+ | ------------------- | ------- | ----------------------- | ------------------------------------------- |
+ | SQLITE              | yes     | yes, no                 | Adds SQLite sources to AdaBase (REQUIRED)   |
+ | MYSQL               | no      | yes, no                 | Adds MySQL sources to AdaBase               |
+ | POSTGRESQL          | no      | yes, no                 | Adds PostgreSQL sources to AdaBase          |
+ | DATABASE            | sqlite  | mysql, postgres, sqlite | Which real database to connect to           |
+ | OS_VERSION          | unix    | unix, windows           | Configures linking options                  |
+ | DEBUGSYM            | no      | yes, no                 | Compiles with debug symbols or optimization |
+ | GPR_BUILD           | static  | static, dynamic         | Something for AWS, don't modify             |
+ | GNATCOLL_CORE_BUILD | static  | static, dynamic         | Something for AWS, don't modify             |
+ | XMLADA_BUILD        | static  | static, dynamic         | Something for AWS, don't modify             |
+ | AWS_BUILD           | static  | static, dynamic         | Something for AWS, don't modify             |
 
 For the `*_api` folders I reccomend using the both.gpr files to build both the tests and the server together. They have
 the same options as listed above.
