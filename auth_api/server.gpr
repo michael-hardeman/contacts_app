@@ -1,0 +1,33 @@
+with "../shared/profiles.gpr";
+with "../shared/dependencies.gpr";
+
+project Server is
+
+   -------------
+   -- Sources --
+   -------------
+   for Source_Dirs use ("../shared/src", "../shared/src/" & Dependencies.Database, "src");
+
+   -------------
+   -- Builder --
+   -------------
+   package Builder is
+      for Executable ("contacts_app-main.adb") use "server";
+   end Builder;
+
+   --------------
+   -- Compiler --
+   --------------
+   package Compiler renames Profiles.Compiler;
+
+   ------------
+   -- Linker --
+   ------------
+   package Linker renames Dependencies.Linker;
+
+   for Languages   use ("Ada");
+   for Object_Dir  use "obj";
+   for Exec_Dir    use ".";
+   for Main        use ("contacts_app-main.adb");
+
+end Server;

@@ -1,0 +1,42 @@
+
+with "aws";
+with "aunit";
+with "gnatcoll";
+with "lib/AdaID/adaid.gpr";
+with "lib/adabase/adabase.gpr";
+
+project Dependencies is
+
+   type Database_Option is ("mysql", "postgres", "sqlite");
+   Database : Database_Option := External("Database", "mysql");
+
+   -------------
+   -- Sources --
+   -------------
+   for Source_Dirs use ();
+
+   ------------
+   -- Linker --
+   ------------
+   package Linker is
+      Switch_Linker := ();
+
+      case AdaBase.OS_VERSION is
+         when "unix" =>
+            Switch_Linker := Switch_Linker & ("-lsqlite");
+            case Database is
+               when "mysql"    => Switch_Linker := Switch_Linker & ("-lmysqlclient");
+               when "postgres" => Switch_Linker := Switch_Linker & ("-lpq");
+            end case;
+         when "windows" =>
+            Switch_Linker := Switch_Linker & ("-Wl,--enable-stdcall-fixup", "C:\bin\sqlite3.dll");
+            case Database is
+               when "mysql"    => Switch_Linker := Switch_Linker & ("-LC:\mysql\lib", "-lmysql");
+               when "postgres" => Switch_Linker := Switch_Linker & ("-LC:\Program Files\PostgreSQL\11\lib", "-lpq");
+            end case;
+      end case;
+
+      for Default_Switches ("Ada") use Switch_Linker;
+   end Linker;
+
+end Dependencies;

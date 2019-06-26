@@ -1,0 +1,39 @@
+with "../shared/profiles.gpr";
+with "../shared/dependencies.gpr";
+
+project Tests is
+
+   -------------
+   -- Sources --
+   -------------
+   for Source_Dirs use ("../shared/src", "../shared/tests/utilities", 
+                        "../shared/src/" & Dependencies.Database, 
+                        "src", "tests");
+
+   -------------
+   -- Builder --
+   -------------
+   package Builder is
+      for Executable ("authorization-test_harness.adb") use "tests";
+   end Builder;
+
+   --------------
+   -- Compiler --
+   --------------
+   package Compiler renames Profiles.Compiler;
+
+   ------------
+   -- Linker --
+   ------------
+   package Linker is
+      for Default_Switches ("Ada") use Dependencies.Linker'Default_Switches ("Ada") & ("-lgcov",
+                                                                                       "-fprofile-arcs",
+                                                                                       "-ftest-coverage");
+   end Linker;
+
+   for Languages   use ("Ada");
+   for Object_Dir  use "obj";
+   for Exec_Dir    use ".";
+   for Main        use ("authorization-test_harness.adb");
+
+end Tests;
