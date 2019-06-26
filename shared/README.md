@@ -41,9 +41,9 @@ Building
 
 Use [tests.gpr](tests.gpr) to test if your database is setup correctly. The important part about building now is setting the right Scenario variables:
 
-`gprbuild -Pshared/tests.gpr -XSQLITE=yes -XMYSQL=yes -XPOSTGRESQL=no -XDatabase=mysql -XOS_VERSION=windows -XDEBUGSYM=no -XGPR_BUILD=static -XGNATCOLL_CORE_BUILD=static -XXMLADA_BUILD=static -XAWS_BUILD=static`
+`gprbuild -Ptests.gpr -XSQLITE=yes -XMYSQL=yes -XPOSTGRESQL=no -XDatabase=mysql -XOS_VERSION=windows -XDEBUGSYM=no -XGPR_BUILD=static -XGNATCOLL_CORE_BUILD=static -XXMLADA_BUILD=static -XAWS_BUILD=static`
 
-You only have to list a scenario variable if you want to change it's value from the default.
+The above shows all scenario variables, but you only have to set the variable if you want to change it's value from the default.
 
 The scenario variables available are:
 

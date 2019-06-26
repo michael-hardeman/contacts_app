@@ -9,17 +9,17 @@ Running It
 
   1. Follow the instructions in [shared/README.md](shared/README.md) to get the server side stuff compiling.
   2. Follow the instructions in [webpage/README.md](webpage/README.md) to get the client side stuff built.
-  3. Build all backend servers using with [all.gpr](all.gpr).
+  3. Build all backend servers using with [application.gpr](application.gpr).
   4. Launch all servers and the webpage to see the full application.
 
 Building
 --------
 
-Use [all.gpr](all.gpr) to build all executables in the application:
+Use [application.gpr](application.gpr) to build all executables in the application:
 
 `gprbuild -Pall.gpr -XSQLITE=yes -XMYSQL=yes -XPOSTGRESQL=no -XDatabase=mysql -XOS_VERSION=windows -XDEBUGSYM=no -XGPR_BUILD=static -XGNATCOLL_CORE_BUILD=static -XXMLADA_BUILD=static -XAWS_BUILD=static`
 
-You only have to list a scenario variable if you want to change it's value from the default.
+The above shows all scenario variables, but you only have to set the variable if you want to change it's value from the default.
 
 The scenario variables available are:
 
