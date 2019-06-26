@@ -2,7 +2,7 @@
 Shared
 ======
 
-This folder contains all things that are shared by all the `*_api` projects. Shared dependencies, shared project configuration, shared source code, shared test code. This is the most essential part of the application to get building. If you can set up tests.gpr, then all other projects should work correctly.
+This folder contains all things that are shared by all the `*_api` projects. Shared dependencies, shared project configuration, shared source code, shared test code. This is the most essential part of the application to get building. If you can set up [tests.gpr](tests.gpr) then all other projects should work correctly when given the correct scenario options.
 
 Setup
 -----
@@ -14,7 +14,7 @@ I reccomend you DO install either MySQL or PostgreSQL and use it. Having a remot
 very useful.
 
 The instructions for linking the database connectors depend on your system platform.
-The instructions are listed here, and also in [shared/dependencies.gpr](shared/dependencies.gpr)
+The instructions are listed here, and also in [dependencies.gpr](dependencies.gpr)
 
 ### Windows
 
@@ -24,22 +24,22 @@ The instructions are listed here, and also in [shared/dependencies.gpr](shared/d
  4. If you installed MySQL or PostgresSQL then add the /lib folder from their installation to your `%PATH%` environment variable.
      * MySQL Default lib folder: `C:\Program Files\MySQL\MySQL Connector C 6.1\lib`
      * PostgreSQL Default lib folder: `C:\Program Files\PostgreSQL\version\lib`
- 5. Modify the paths in [shared/dependencies.gpr][shared/dependencies.gpr] to point to the folders described in 3 and 4.
+ 5. Modify the paths in [dependencies.gpr][dependencies.gpr] to point to the folders described in 3 and 4.
 
 ### Unix
 
  1. Use your package manager to install [libsqlite3-dev](https://packages.ubuntu.com/disco/libsqlite3-dev)
  2. Choose if you want to download either [libmysqlclient-dev](https://packages.ubuntu.com/disco/libmysqlclient-dev) or [libpq-dev](https://packages.ubuntu.com/disco/libpq-dev)
 
-Example Application Database
-----------------------------
+Application Database Setup
+--------------------------
 
-Relevant database setup scripts are included in the database folder. Follow the instructions in that folder to set up the example database.
+Relevant database setup scripts are included in the database folder. Follow the instructions in that folder to set up the application database.
 
 Building
 --------
 
-Use [shared/tests.gpr](shared/tests.gpr) to test if your database is setup correctly. The important part about building now is setting the right Scenario variables:
+Use [tests.gpr](tests.gpr) to test if your database is setup correctly. The important part about building now is setting the right Scenario variables:
 
 `gprbuild -Pshared/tests.gpr -XSQLITE=yes -XMYSQL=yes -XPOSTGRESQL=no -XDatabase=mysql -XOS_VERSION=windows -XDEBUGSYM=no -XGPR_BUILD=static -XGNATCOLL_CORE_BUILD=static -XXMLADA_BUILD=static -XAWS_BUILD=static`
 
