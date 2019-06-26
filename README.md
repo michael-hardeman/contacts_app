@@ -4,24 +4,6 @@ Contacts Example App
 
 This is an example of a modern web application, built with an Ada micro service backend. I hope this can serve as a template that will help others build high integrity backends, quickly.
 
-Libraries Summary
------------------
-
- * Ada Web Server - For building programs that serve HTTP/HTTPS content
- * GNATCOLL - I only used the JSON parser/serializer; but there are quite a few useful components here.
- * AdaBase - Database Connector Bindings for MySQL, Postgres, SQLite, 
- * AdaID - GUID generation
-
-Port Summary
-------------
-
- | Service        | Port |
- | -------------- | ---- |
- | webpage        | 8081 |
- | auth_api       | 8082 |
- | users_api      | 8083 |
- | contacts_api   | 8084 |
-
 Setup
 -----
 
@@ -81,6 +63,26 @@ The scenario variables available are:
 
 For the `*_api` folders I reccomend using the both.gpr files to build both the tests and the server together. They have
 the same options as listed above.
+
+Libraries Summary
+-----------------
+
+ * Ada Web Server - For building programs that serve HTTP/HTTPS content
+ * GNATCOLL - I only used the JSON parser/serializer; but there are quite a few useful components here.
+ * AdaBase - Database Connector Bindings for MySQL, Postgres, SQLite, 
+ * AdaID - GUID generation
+
+Port Summary
+------------
+ 
+ The port the server will use is configured in the aws.ini file inside the `*_api` folder.
+
+ | Service        | Port |
+ | -------------- | ---- |
+ | webpage        | 8081 |
+ | auth_api       | 8082 |
+ | users_api      | 8083 |
+ | contacts_api   | 8084 |
 
 Enabling HTTPS
 --------------
