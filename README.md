@@ -1,47 +1,23 @@
 
-Contacts Example App
-====================
+Example Ada Micro Service Project
+=================================
 
 This is an example of a modern web application, built with an Ada micro service backend. I hope this can serve as a template that will help others build high integrity backends, quickly.
 
-Setup
------
+Running It
+----------
 
-The only dependencies that are linked are the database connector libraries.
-SQLite is required as it is used as the in memory database for the unit tests.
-The database each service actually uses can be MySQL, PostgreSQL, or Sqlite. 
-I reccomend you DO install either MySQL or PostgreSQL and use it. Having a remote database is
-very useful.
-
-The instructions for linking the database connectors depend on your system platform.
-The instructions are listed here, and also in [shared/dependencies.gpr](shared/dependencies.gpr)
-
-### Windows
-
- 1. Download [SQLite binaries](https://sqlite.org/download.html) 
- 2. Choose if you want to download either [MySQL](https://dev.mysql.com/downloads/installer/) or [PostgreSQL](https://www.postgresql.org/download/) installer.
- 3. Place the SQLite binaries in a convenient spot and add it to your `%PATH%` environment variable.
- 4. If you installed MySQL or PostgresSQL then add the /lib folder from their installation to your `%PATH%` environment variable.
-     * MySQL Default lib folder: `C:\Program Files\MySQL\MySQL Connector C 6.1\lib`
-     * PostgreSQL Default lib folder: `C:\Program Files\PostgreSQL\version\lib`
- 5. Modify the paths in [shared/dependencies.gpr][shared/dependencies.gpr] to point to the folders described in 3 and 4.
-
-### Linux
-
- 1. Use your package manager to install [libsqlite3-dev](https://packages.ubuntu.com/disco/libsqlite3-dev)
- 2. Choose if you want to download either [libmysqlclient-dev](https://packages.ubuntu.com/disco/libmysqlclient-dev) or [libpq-dev](https://packages.ubuntu.com/disco/libpq-dev)
-
-Example Application Database
-----------------------------
-
-Relevant database setup scripts are included in the database folder. Follow the instructions in that folder to set up the example database.
+  1. Follow the instructions in [shared/README.md](shared/README.md) to get the server side stuff compiling.
+  2. Follow the instructions in [webpage/README.md](webpage/README.md) to get the client side stuff built.
+  3. Build all backend servers using with [all.gpr](all.gpr).
+  4. Launch all servers and the webpage to see the full application.
 
 Building
 --------
 
-Use [shared/tests.gpr](shared/tests.gpr) to test if your database is setup correctly. The important part about building now is setting the right Scenario variables:
+Use [all.gpr](all.gpr) to build all executables in the application:
 
-`gprbuild -Pshared/tests.gpr -XSQLITE=yes -XMYSQL=yes -XPOSTGRESQL=no -XDatabase=mysql -XOS_VERSION=windows -XDEBUGSYM=no -XGPR_BUILD=static -XGNATCOLL_CORE_BUILD=static -XXMLADA_BUILD=static -XAWS_BUILD=static`
+`gprbuild -Pall.gpr -XSQLITE=yes -XMYSQL=yes -XPOSTGRESQL=no -XDatabase=mysql -XOS_VERSION=windows -XDEBUGSYM=no -XGPR_BUILD=static -XGNATCOLL_CORE_BUILD=static -XXMLADA_BUILD=static -XAWS_BUILD=static`
 
 You only have to list a scenario variable if you want to change it's value from the default.
 
@@ -60,21 +36,19 @@ The scenario variables available are:
  | XMLADA_BUILD        | static  | static, dynamic         | Something for AWS, don't modify             |
  | AWS_BUILD           | static  | static, dynamic         | Something for AWS, don't modify             |
 
-For the `*_api` folders I reccomend using the both.gpr files to build both the tests and the server together. They have
-the same options as listed above.
-
 Libraries Summary
 -----------------
 
- * Ada Web Server - For building programs that serve HTTP/HTTPS content
- * GNATCOLL - I only used the JSON parser/serializer; but there are quite a few useful components here.
- * AdaBase - Database Connector Bindings for MySQL, Postgres, SQLite, 
- * AdaID - GUID generation
+ * Ada Web Server - For building programs that serve and consume HTTP/HTTPS content.
+ * GNATCOLL - I only used the JSON parser and serializer; but there are many useful components.
+ * AdaBase - Database connector bindings for MySQL, Postgres, SQLite, and Firebird.
+ * AdaID - GUID generation library
+ * AUnit - Ada unit testing framework.
 
 Port Summary
 ------------
  
- The port the server will use is configured in the aws.ini file inside the `*_api` folder.
+ The port the server will use is configured in the aws.ini file inside each `*_api` folder.
 
  | Service        | Port |
  | -------------- | ---- |
@@ -86,7 +60,7 @@ Port Summary
 Enabling HTTPS
 --------------
 
-For a microservice architecture, it would be better to configure your reverse proxy or load balancer to use HTTPS instead of the individual services. However, there might be some situation where this is needed. If you haven't already, you have to rebuild and install AWS with SSL support enabled.
+For a micro service architecture, it would be better to configure your reverse proxy or load balancer to use HTTPS instead of the individual services. However, there might be some situation where you need https communication internally. If you haven't already, you have to rebuild and install AWS with SSL support enabled since it's not built with it by default.
 
 Refer to the [Building AWS](https://docs.adacore.com/aws-docs/aws/building_aws.html) documentation. Here is an example of what I did to enable it.
 
