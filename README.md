@@ -1,19 +1,55 @@
 
-Contacts Example App
-====================
+Example Ada Micro Service Project
+=================================
 
 This is an example of a modern web application, built with an Ada micro service backend. I hope this can serve as a template that will help others build high integrity backends, quickly.
+
+Running It
+----------
+
+  1. Follow the instructions in [shared/README.md](shared/README.md) to get the server side stuff compiling.
+  2. Follow the instructions in [webpage/README.md](webpage/README.md) to get the client side stuff built.
+  3. Build all backend servers using with [application.gpr](application.gpr).
+  4. Launch all servers and the webpage to see the full application.
+
+Building
+--------
+
+Use [application.gpr](application.gpr) to build all executables in the application:
+
+`gprbuild -Pall.gpr -XSQLITE=yes -XMYSQL=yes -XPOSTGRESQL=no -XDatabase=mysql -XOS_VERSION=windows -XDEBUG=yes -XDEBUGSYM=no -XGPR_BUILD=static -XGNATCOLL_CORE_BUILD=static -XXMLADA_BUILD=static -XAWS_BUILD=static`
+
+The above shows all scenario variables, but you only have to set the variable if you want to change it's value from the default.
+
+The scenario variables available are:
+
+ | Variable            | Default | Possible Values         | Description                                    |
+ | ------------------- | ------- | ----------------------- | ---------------------------------------------- |
+ | SQLITE              | yes     | yes, no                 | Adds SQLite sources to AdaBase (REQUIRED)      |
+ | MYSQL               | no      | yes, no                 | Adds MySQL sources to AdaBase                  |
+ | POSTGRESQL          | no      | yes, no                 | Adds PostgreSQL sources to AdaBase             |
+ | DATABASE            | sqlite  | mysql, postgres, sqlite | Which real database to connect to              |
+ | OS_VERSION          | unix    | unix, windows           | Configures linking options                     |
+ | DEBUG               | yes     | yes, no                 | Compiles app source with debug or optimization |
+ | DEBUGSYM            | no      | yes, no                 | Compiles AdaBase with debug symbols            |
+ | GPR_BUILD           | static  | static, dynamic         | Something for AWS, don't modify                |
+ | GNATCOLL_CORE_BUILD | static  | static, dynamic         | Something for AWS, don't modify                |
+ | XMLADA_BUILD        | static  | static, dynamic         | Something for AWS, don't modify                |
+ | AWS_BUILD           | static  | static, dynamic         | Something for AWS, don't modify                |
 
 Libraries Summary
 -----------------
 
- * Ada Web Server - For building programs that serve HTTP/HTTPS content
- * GNATCOLL - I only used the JSON parser/serializer; but there are quite a few useful components here.
- * AdaBase - Database Connector Bindings for MySQL, Postgres, SQLite, 
- * AdaID - GUID generation
+ * Ada Web Server - For building programs that serve and consume HTTP/HTTPS content.
+ * GNATCOLL - I only used the JSON parser and serializer; but there are many useful components.
+ * AdaBase - Database connector bindings for MySQL, Postgres, SQLite, and Firebird.
+ * AdaID - GUID generation library
+ * AUnit - Ada unit testing framework.
 
 Port Summary
 ------------
+ 
+ The port the server will use is configured in the aws.ini file inside each `*_api` folder.
 
  | Service        | Port |
  | -------------- | ---- |
@@ -22,39 +58,10 @@ Port Summary
  | users_api      | 8083 |
  | contacts_api   | 8084 |
 
-Database
---------
-
-### Building with MySQL
-
-#### Linux
-
-Install the client libraries libmysqlclient will need to be present on the system you deploy to.
-
-    sudo apt-get install libmysqlclient-dev
-
-#### Windows
-
-The client library `libmysql.dll` is included in the [MySQL Installer](https://dev.mysql.com/downloads/installer/). After downloading and installing, I found it in `C:\Program Files\MySQL\MySQL Connector C 6.1\lib`. Copy `libmysql.dll` to `shared` and to each `*_api` folder. That dll will need to exist on the executable path of the `*_api.exe` on any system you deploy to.
-
-### Building the API with PostgreSQL
-
-#### Linux
-  
-Install the client libraries. libpq will need to be present on the system you deploy to.
-
-    sudo apt-get install libpq-dev
-
-#### Windows
-
-The client library `libpq.dll` is included in the [PostgreSQL Installer](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads). After downloading and installing, I found it in `C:\Program Files\PostgreSQL\version\lib`. Copy `libpq.dll` to `shared` and to each `*_api` folder. That dll will need to exist on the executable path of the `*_api.exe` on any system you deploy to.
-
-
-
 Enabling HTTPS
 --------------
 
-For a microservice architecture, it would be better to configure your reverse proxy or load balancer to use HTTPS instead of the individual services. However, there might be some situation where this is needed. If you haven't already, you have to rebuild and install AWS with SSL support enabled.
+For a micro service architecture, it would be better to configure your reverse proxy or load balancer to use HTTPS instead of the individual services. However, there might be some situation where you need https communication internally. If you haven't already, you have to rebuild and install AWS with SSL support enabled since it's not built with it by default.
 
 Refer to the [Building AWS](https://docs.adacore.com/aws-docs/aws/building_aws.html) documentation. Here is an example of what I did to enable it.
 

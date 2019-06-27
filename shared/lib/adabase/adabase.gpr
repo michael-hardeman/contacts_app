@@ -4,10 +4,10 @@ project AdaBase is
    type Driver_Included is ("yes", "no");
 
    Os_Version    : Os_Type         := external ("OS_VERSION", "unix");
-   Driver_MySQL  : Driver_Included := external ("MYSQL", "yes");
+   Driver_MySQL  : Driver_Included := external ("MYSQL", "no");
    Driver_PgSQL  : Driver_Included := external ("POSTGRESQL", "no");
    Driver_FBird  : Driver_Included := external ("FIREBIRD", "no");
-   Driver_SQLite : Driver_Included := external ("SQLITE", "no");
+   Driver_SQLite : Driver_Included := external ("SQLITE", "yes");
    Debug_Symbols : Driver_Included := external ("DEBUGSYM", "no");
 
    for Source_Dirs use ("src/**");

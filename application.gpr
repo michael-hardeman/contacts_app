@@ -1,0 +1,4 @@
+aggregate project Application is
+   for Object_Dir    use "obj";
+   for Project_Files use ("auth_api/server.gpr");
+end Application;

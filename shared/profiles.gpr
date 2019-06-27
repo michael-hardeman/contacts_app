@@ -1,13 +1,8 @@
 
 project Profiles is
 
-   for Source_Dirs use ();
-
-   ----------------------
-   -- Scenario Options --
-   ----------------------
    type Boolean_Option is ("yes", "no");
-   Debug : Boolean_Option := external ("Debug", "yes");
+   Debug : Boolean_Option := External ("DEBUG", "yes");
 
    --------------
    -- Compiler --
@@ -28,5 +23,7 @@ project Profiles is
        
       for Default_Switches ("Ada") use Switch_Compiler;
    end Compiler;
+
+   for Source_Dirs use ();
 
 end Profiles;
