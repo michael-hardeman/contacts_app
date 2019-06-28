@@ -1,5 +1,3 @@
+*.dll
 *.log
-users_api
-users_api.*
-users-test_harness
-users-test_harness.*
+*.exe

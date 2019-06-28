@@ -13,7 +13,5 @@ package Contacts_App.Test_Utilities.Common is
    procedure Assert_Naturals_Equal    is new Assert_Definite_Equal   (Natural,  "=", Natural'Image);
    procedure Assert_Positives_Equal   is new Assert_Definite_Equal   (Positive, "=", Positive'Image);
    procedure Assert_Strings_Equal     is new Assert_Indefinite_Equal (String,   "=", String_Image);
-   procedure Assert_Stream_Element_Arrays_Equal is new Assert_Indefinite_Equal (Stream_Element_Array, "=", Stream_Element_Array_Image);
-
 end;
 

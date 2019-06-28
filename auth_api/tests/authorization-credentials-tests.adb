@@ -1,20 +1,11 @@
 
 with AUnit.Assertions; use AUnit.Assertions;
-pragma Elaborate_All (AUnit);
-pragma Elaborate_All (AUnit.Assertions);
 
 with Ada.Streams; use Ada.Streams;
 
-with Contacts_App.Database;
-with Authorization.Test_Utilities.Common; use Authorization.Test_Utilities.Common;
-
+with Contacts_App.Test_Utilities.Common; use Contacts_App.Test_Utilities.Common;
 
 package body Authorization.Credentials.Tests is
-
-   ---------------
-   -- Constants --
-   ---------------
-   Driver : Contacts_App.Database.Database_Driver;
 
    --------------------
    -- Register_Tests --
@@ -26,7 +17,7 @@ package body Authorization.Credentials.Tests is
       Register_Routine (T, Test_Parse_Invalid'Access,   "Ensure parsing invalid json raises a Parsing_Error");
       Register_Routine (T, Test_Parse_Incorrect'Access, "Ensure parsing valid but incorrect data raises a Parsing_Error");
       Register_Routine (T, Test_Parse_Valid'Access,     "Ensure parsing valid data returns valid credentials");
-   end Register_Tests;
+   end;
 
    -----------------------------
    -- To_Stream_Element_Array --

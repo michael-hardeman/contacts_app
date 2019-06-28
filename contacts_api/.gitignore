@@ -1,5 +1,3 @@
+*.dll
 *.log
-contacts_api
-contacts_api.*
-contacts-test_harness
-contacts-test_harness.*
+*.exe
